@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "commit": "git-cz"
   },
   "dependencies": {
     "@next/font": "13.1.2",
@@ -24,6 +25,8 @@
     "@typescript-eslint/eslint-plugin": "^5.48.1",
     "@typescript-eslint/parser": "^5.48.1",
     "autoprefixer": "^10.4.13",
+    "commitizen": "^4.2.6",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -42,5 +45,10 @@
     "**/*.{css,scss,md,html,json}": [
       "prettier --config ./.prettierrc --write"
     ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
