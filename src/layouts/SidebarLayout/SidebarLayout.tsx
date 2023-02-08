@@ -16,11 +16,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 const generalNavigation = [
-  { name: 'Panel', href: '#', icon: HomeIcon, current: true },
+  { name: 'Panel', href: '/', icon: HomeIcon, current: true },
 ];
 
 const aidNavigation = [
-  { name: 'Bağışlar', href: '#', icon: ArrowLeftIcon, current: false },
+  { name: 'Bağışlar', href: '/donate', icon: ArrowLeftIcon, current: false },
   { name: 'Talepler', href: '#', icon: ArrowRightIcon, current: false },
   { name: 'Aksiyonlar', href: '#', icon: BoltIcon, current: false },
   { name: 'Envanter', href: '#', icon: ArchiveBoxIcon, current: false },
