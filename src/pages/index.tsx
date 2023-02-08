@@ -10,6 +10,8 @@ import {
   ChartOptions,
 } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
+import dynamic from 'next/dynamic';
+import { Locations } from '@/components/Map/Map';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -32,6 +34,25 @@ const chartOptions: ChartOptions<'doughnut'> = {
   },
 };
 
+const Map = dynamic(() => import('@/components/Map/Map'), {
+  ssr: false,
+});
+
+const locations: Locations[] = [
+  {
+    name: 'Samandağ',
+    location: [36.0829947, 35.9518883],
+  },
+  {
+    name: 'Altınözü',
+    location: [36.1201087, 36.2434963],
+  },
+  {
+    name: 'Antakya',
+    location: [36.2210046, 36.0955892],
+  },
+];
+
 const Home = () => {
   return (
     <>
@@ -42,116 +63,134 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <section>
-        <h2 className="text-sm uppercase font-semibold text-gray-600">
-          Bağış İstatistikleri
-        </h2>
+      <main className="space-y-14">
+        <section>
+          <h2 className="text-sm uppercase font-semibold text-gray-600">
+            Bağış İstatistikleri
+          </h2>
 
-        <div className="mt-4">
-          <dl className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-            <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-              <dt className="text-sm font-medium text-gray-500 truncate">
-                Title
-              </dt>
-              <dd className="mt-1 text-3xl font-semibold text-gray-900">
-                1.000
-              </dd>
-            </div>
+          <div className="mt-4">
+            <dl className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+              <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+                <dt className="text-sm font-medium text-gray-500 truncate">
+                  Title
+                </dt>
+                <dd className="mt-1 text-3xl font-semibold text-gray-900">
+                  1.000
+                </dd>
+              </div>
 
-            <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-              <dt className="text-sm font-medium text-gray-500 truncate">
-                Title
-              </dt>
-              <dd className="mt-1 text-3xl font-semibold text-gray-900">
-                1.000
-              </dd>
-            </div>
+              <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+                <dt className="text-sm font-medium text-gray-500 truncate">
+                  Title
+                </dt>
+                <dd className="mt-1 text-3xl font-semibold text-gray-900">
+                  1.000
+                </dd>
+              </div>
 
-            <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-              <dt className="text-sm font-medium text-gray-500 truncate">
-                Title
-              </dt>
-              <dd className="mt-1 text-3xl font-semibold text-gray-900">
-                1.000
-              </dd>
-            </div>
+              <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+                <dt className="text-sm font-medium text-gray-500 truncate">
+                  Title
+                </dt>
+                <dd className="mt-1 text-3xl font-semibold text-gray-900">
+                  1.000
+                </dd>
+              </div>
 
-            <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-              <dt className="text-sm font-medium text-gray-500 truncate">
-                Title
-              </dt>
-              <dd className="mt-1 text-3xl font-semibold text-gray-900">
-                1.000
-              </dd>
-            </div>
+              <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+                <dt className="text-sm font-medium text-gray-500 truncate">
+                  Title
+                </dt>
+                <dd className="mt-1 text-3xl font-semibold text-gray-900">
+                  1.000
+                </dd>
+              </div>
 
-            <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-              <dt className="text-sm font-medium text-gray-500 truncate">
-                Title
-              </dt>
-              <dd className="mt-1 text-3xl font-semibold text-gray-900">
-                1.000
-              </dd>
-            </div>
+              <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+                <dt className="text-sm font-medium text-gray-500 truncate">
+                  Title
+                </dt>
+                <dd className="mt-1 text-3xl font-semibold text-gray-900">
+                  1.000
+                </dd>
+              </div>
 
-            <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-              <dt className="text-sm font-medium text-gray-500 truncate">
-                Title
-              </dt>
-              <dd className="mt-1 text-3xl font-semibold text-gray-900">
-                1.000
-              </dd>
-            </div>
-          </dl>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-5">
-          <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-            <dt className="text-sm font-medium text-gray-500 truncate">
-              Title
-            </dt>
-
-            <dd className="mt-1">
-              <Doughnut
-                options={chartOptions}
-                data={chartData}
-                width="auto"
-                height="auto"
-              />
-            </dd>
+              <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+                <dt className="text-sm font-medium text-gray-500 truncate">
+                  Title
+                </dt>
+                <dd className="mt-1 text-3xl font-semibold text-gray-900">
+                  1.000
+                </dd>
+              </div>
+            </dl>
           </div>
 
-          <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-            <dt className="text-sm font-medium text-gray-500 truncate">
-              Title
-            </dt>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-5">
+            <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+              <dt className="text-sm font-medium text-gray-500 truncate">
+                Title
+              </dt>
 
-            <dd className="mt-1">
-              <Doughnut
-                options={chartOptions}
-                data={chartData}
-                width="auto"
-                height="auto"
-              />
-            </dd>
+              <dd className="mt-1">
+                <Doughnut
+                  options={chartOptions}
+                  data={chartData}
+                  width="auto"
+                  height="auto"
+                />
+              </dd>
+            </div>
+
+            <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+              <dt className="text-sm font-medium text-gray-500 truncate">
+                Title
+              </dt>
+
+              <dd className="mt-1">
+                <Doughnut
+                  options={chartOptions}
+                  data={chartData}
+                  width="auto"
+                  height="auto"
+                />
+              </dd>
+            </div>
+
+            <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+              <dt className="text-sm font-medium text-gray-500 truncate">
+                Title
+              </dt>
+
+              <dd className="mt-1">
+                <Doughnut
+                  options={chartOptions}
+                  data={chartData}
+                  width="auto"
+                  height="auto"
+                />
+              </dd>
+            </div>
           </div>
+        </section>
 
-          <div className="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-            <dt className="text-sm font-medium text-gray-500 truncate">
-              Title
-            </dt>
+        <section className="mt-5 space-y-4">
+          <h2 className="text-sm uppercase font-semibold text-gray-600">
+            Toplama Konumları
+          </h2>
 
-            <dd className="mt-1">
-              <Doughnut
-                options={chartOptions}
-                data={chartData}
-                width="auto"
-                height="auto"
-              />
-            </dd>
-          </div>
-        </div>
-      </section>
+          <Map locations={locations} />
+        </section>
+
+        <section className="mt-5 space-y-4">
+          <h2 className="text-sm uppercase font-semibold text-gray-600">
+            Dağıtım Konumları
+          </h2>
+
+          <Map locations={locations} />
+        </section>
+      </main>
     </>
   );
 };
