@@ -16,7 +16,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 const generalNavigation = [
-  { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
+  { name: 'Panel', href: '#', icon: HomeIcon, current: true },
 ];
 
 const aidNavigation = [
