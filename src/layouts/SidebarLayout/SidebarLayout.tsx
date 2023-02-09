@@ -14,6 +14,7 @@ import {
 import cx from 'classnames';
 import Link from 'next/link';
 import Image from 'next/image';
+import { User } from '@supabase/auth-helpers-nextjs';
 
 const generalNavigation = [
   { name: 'Panel', href: '#', icon: HomeIcon, current: true },
@@ -32,8 +33,8 @@ const contentNavigation = [
 ];
 
 const userNavigation = [
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
+  { name: 'Ayarlar', href: '#' },
+  { name: 'Çıkış Yap', href: '/logout' },
 ];
 
 const createUserAvatarUrl = (fullName: string) => {
@@ -42,18 +43,23 @@ const createUserAvatarUrl = (fullName: string) => {
   return `https://ui-avatars.com/api/?name=${firstLetter}&background=000&color=fff`;
 };
 
-const user = {
-  name: 'Tom Cook',
-  avatar: createUserAvatarUrl('Tom Cook'),
+const createUsernameFromEmail = (email: string) => {
+  const [username] = email.split('@');
+
+  return username;
 };
 
 type Props = {
   children: React.ReactNode;
   title: string;
+  user?: User;
 };
 
-export default function SidebarLayout({ children, title }: Props) {
+export default function SidebarLayout({ children, title, user }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const username = createUsernameFromEmail(user?.email || '');
+  const avatar = createUserAvatarUrl(username);
 
   return (
     <>
@@ -297,50 +303,61 @@ export default function SidebarLayout({ children, title }: Props) {
           <div className="flex-1 px-4 flex justify-between">
             <div className="ml-4 flex flex-1 items-center justify-end md:ml-6">
               {/* Profile dropdown */}
-              <Menu as="div" className="relative">
-                <div>
-                  <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    <span className="sr-only">Open user menu</span>
+              {user ? (
+                <Menu as="div" className="relative">
+                  <div>
+                    <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                      <span className="sr-only">Open user menu</span>
 
-                    <Image
-                      className="h-8 w-8 rounded-full"
-                      alt="Avatar"
-                      src={{
-                        width: 100,
-                        height: 100,
-                        src: user.avatar,
-                      }}
-                    />
-                  </Menu.Button>
+                      <Image
+                        className="h-8 w-8 rounded-full"
+                        alt="Avatar"
+                        src={{
+                          width: 100,
+                          height: 100,
+                          src: avatar,
+                        }}
+                      />
+                    </Menu.Button>
+                  </div>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      {userNavigation.map((item) => (
+                        <Menu.Item key={item.name}>
+                          {({ active }) => (
+                            <a
+                              href={item.href}
+                              className={cx(
+                                active ? 'bg-gray-100' : '',
+                                'block px-4 py-2 text-sm text-gray-700',
+                              )}
+                            >
+                              {item.name}
+                            </a>
+                          )}
+                        </Menu.Item>
+                      ))}
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+              ) : (
+                <div>
+                  <Link
+                    className="text-base font-semibold text-indigo-500"
+                    href="/login"
+                  >
+                    Login
+                  </Link>
                 </div>
-                <Transition
-                  as={Fragment}
-                  enter="transition ease-out duration-100"
-                  enterFrom="transform opacity-0 scale-95"
-                  enterTo="transform opacity-100 scale-100"
-                  leave="transition ease-in duration-75"
-                  leaveFrom="transform opacity-100 scale-100"
-                  leaveTo="transform opacity-0 scale-95"
-                >
-                  <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    {userNavigation.map((item) => (
-                      <Menu.Item key={item.name}>
-                        {({ active }) => (
-                          <a
-                            href={item.href}
-                            className={cx(
-                              active ? 'bg-gray-100' : '',
-                              'block px-4 py-2 text-sm text-gray-700',
-                            )}
-                          >
-                            {item.name}
-                          </a>
-                        )}
-                      </Menu.Item>
-                    ))}
-                  </Menu.Items>
-                </Transition>
-              </Menu>
+              )}
             </div>
           </div>
         </div>

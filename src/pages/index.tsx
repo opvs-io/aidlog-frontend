@@ -1,6 +1,6 @@
 import SidebarLayout from '@/layouts/SidebarLayout/SidebarLayout';
 import Head from 'next/head';
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import {
   Chart as ChartJS,
   ArcElement,
@@ -11,6 +11,8 @@ import {
 } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import dynamic from 'next/dynamic';
+
+import { SupabaseAuth, withSupabaseAuth } from '@/providers/auth.middleware';
 import { Locations } from '@/components/Map/Map';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -53,7 +55,14 @@ const locations: Locations[] = [
   },
 ];
 
-const Home = () => {
+const Home = ({ session, user }: SupabaseAuth) => {
+  useEffect(() => {
+    console.log({
+      session,
+      user,
+    });
+  }, [session, user]);
+
   return (
     <>
       <Head>
@@ -195,8 +204,14 @@ const Home = () => {
   );
 };
 
-Home.getLayout = function getLayout(page: ReactElement) {
-  return <SidebarLayout title="Panel">{page}</SidebarLayout>;
+export const getServerSideProps = withSupabaseAuth();
+
+Home.getLayout = function getLayout(page: ReactElement<SupabaseAuth>) {
+  return (
+    <SidebarLayout title="Panel" user={page.props.user}>
+      {page}
+    </SidebarLayout>
+  );
 };
 
 export default Home;
