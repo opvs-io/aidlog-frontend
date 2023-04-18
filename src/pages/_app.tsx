@@ -2,9 +2,13 @@ import '@/styles/globals.css';
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { ReactElement, ReactNode, useState } from 'react';
+import { RecoilRoot } from 'recoil';
+import { QueryClientProvider } from 'react-query';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react';
 import AuthProvider from '@/providers/AuthProvider';
+import queryClient from '@/configs/query-client';
+import { Toaster } from 'react-hot-toast';
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const [supabaseClient] = useState(() => createBrowserSupabaseClient());
@@ -12,12 +16,19 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
-    <SessionContextProvider
-      supabaseClient={supabaseClient}
-      initialSession={pageProps.initialSession}
-    >
-      <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
-    </SessionContextProvider>
+    <QueryClientProvider client={queryClient}>
+      <RecoilRoot>
+        <SessionContextProvider
+          supabaseClient={supabaseClient}
+          initialSession={pageProps.initialSession}
+        >
+          <AuthProvider>
+            {getLayout(<Component {...pageProps} />)}
+            <Toaster />
+          </AuthProvider>
+        </SessionContextProvider>
+      </RecoilRoot>
+    </QueryClientProvider>
   );
 }
 

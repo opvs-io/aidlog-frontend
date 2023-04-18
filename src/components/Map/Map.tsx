@@ -1,15 +1,19 @@
 import React, { useMemo } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import { LatLngExpression } from 'leaflet';
+import { LatLngExpression, LeafletMouseEvent } from 'leaflet';
 
 import 'leaflet/dist/leaflet.css';
 
 import LocationMarker from '@/components/Map/LocationMarker';
 import * as locationService from '@/components/Map/location.service';
 import Marker from '@/components/Map/Marker';
+import classNames from 'classnames';
+import ClickHandler from '@/components/Map/ClickHandler';
 
 type Props = {
   locations: Locations[];
+  className?: string;
+  onClick?: (event: LeafletMouseEvent) => void;
 };
 
 export type Locations = {
@@ -17,7 +21,7 @@ export type Locations = {
   name: string;
 };
 
-const Map = ({ locations }: Props) => {
+const Map = ({ locations, className, onClick }: Props) => {
   const center = useMemo(() => {
     const lastLocation = locationService.getLocation();
 
@@ -30,7 +34,7 @@ const Map = ({ locations }: Props) => {
 
   return (
     <MapContainer
-      className="h-96 bg-red-200"
+      className={classNames('h-96', className)}
       zoom={9}
       scrollWheelZoom={false}
       center={center}
@@ -39,7 +43,7 @@ const Map = ({ locations }: Props) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-
+      <ClickHandler onClick={onClick} />
       <LocationMarker />
 
       {locations.map((location) => (

@@ -15,25 +15,24 @@ import cx from 'classnames';
 import Link from 'next/link';
 import Image from 'next/image';
 import { User } from '@supabase/auth-helpers-nextjs';
+import { useRouter } from 'next/router';
 
-const generalNavigation = [
-  { name: 'Panel', href: '#', icon: HomeIcon, current: true },
-];
+const generalNavigation = [{ name: 'Panel', href: '/', icon: HomeIcon }];
 
 const aidNavigation = [
-  { name: 'Bağışlar', href: '#', icon: ArrowLeftIcon, current: false },
-  { name: 'Talepler', href: '#', icon: ArrowRightIcon, current: false },
-  { name: 'Aksiyonlar', href: '#', icon: BoltIcon, current: false },
-  { name: 'Envanter', href: '#', icon: ArchiveBoxIcon, current: false },
+  { name: 'Bağışlar', href: '#', icon: ArrowLeftIcon },
+  { name: 'Talepler', href: '/demands', icon: ArrowRightIcon },
+  { name: 'Aksiyonlar', href: '#', icon: BoltIcon },
+  { name: 'Envanter', href: '#', icon: ArchiveBoxIcon },
 ];
 
 const contentNavigation = [
-  { name: 'Toplanma Alanları', href: '#', icon: MapIcon, current: false },
-  { name: 'Kullanıcılar', href: '#', icon: UsersIcon, current: false },
+  { name: 'Toplanma Alanları', href: '#', icon: MapIcon },
+  { name: 'Kullanıcılar', href: '#', icon: UsersIcon },
 ];
 
 const userNavigation = [
-  { name: 'Ayarlar', href: '#' },
+  { name: 'Ayarlar', href: '/settings' },
   { name: 'Çıkış Yap', href: '/logout' },
 ];
 
@@ -51,15 +50,27 @@ const createUsernameFromEmail = (email: string) => {
 
 type Props = {
   children: React.ReactNode;
-  title: string;
+  title?: string;
   user?: User;
+  header?: React.ReactNode;
 };
 
-export default function SidebarLayout({ children, title, user }: Props) {
+export default function SidebarLayout({
+  children,
+  title,
+  user,
+  header,
+}: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const username = createUsernameFromEmail(user?.email || '');
   const avatar = createUserAvatarUrl(username);
+
+  const router = useRouter();
+
+  const checkActive = (href: string) => {
+    return router.route === href;
+  };
 
   return (
     <>
@@ -121,11 +132,11 @@ export default function SidebarLayout({ children, title, user }: Props) {
               <div className="mt-5 flex-1 h-0 overflow-y-auto space-y-6">
                 <nav className="px-2 space-y-1">
                   {generalNavigation.map((item) => (
-                    <a
+                    <Link
                       key={item.name}
                       href={item.href}
                       className={cx(
-                        item.current
+                        checkActive(item.href)
                           ? 'bg-indigo-800 text-white'
                           : 'text-indigo-100 hover:bg-indigo-600',
                         'group flex items-center px-2 py-2 text-base font-medium rounded-md',
@@ -136,7 +147,7 @@ export default function SidebarLayout({ children, title, user }: Props) {
                         aria-hidden="true"
                       />
                       {item.name}
-                    </a>
+                    </Link>
                   ))}
                 </nav>
 
@@ -147,11 +158,11 @@ export default function SidebarLayout({ children, title, user }: Props) {
 
                   <nav className="mt-2 px-2 space-y-1">
                     {aidNavigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
                         href={item.href}
                         className={cx(
-                          item.current
+                          checkActive(item.href)
                             ? 'bg-indigo-800 text-white'
                             : 'text-indigo-100 hover:bg-indigo-600',
                           'group flex items-center px-2 py-2 text-base font-medium rounded-md',
@@ -162,7 +173,7 @@ export default function SidebarLayout({ children, title, user }: Props) {
                           aria-hidden="true"
                         />
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </nav>
                 </div>
@@ -174,11 +185,11 @@ export default function SidebarLayout({ children, title, user }: Props) {
 
                   <nav className="mt-2 px-2 space-y-1">
                     {contentNavigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
                         href={item.href}
                         className={cx(
-                          item.current
+                          checkActive(item.href)
                             ? 'bg-indigo-800 text-white'
                             : 'text-indigo-100 hover:bg-indigo-600',
                           'group flex items-center px-2 py-2 text-base font-medium rounded-md',
@@ -189,7 +200,7 @@ export default function SidebarLayout({ children, title, user }: Props) {
                           aria-hidden="true"
                         />
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </nav>
                 </div>
@@ -214,11 +225,11 @@ export default function SidebarLayout({ children, title, user }: Props) {
           <div className="mt-5 flex-1 flex flex-col space-y-6">
             <nav className="px-2 space-y-1">
               {generalNavigation.map((item) => (
-                <a
+                <Link
                   key={item.name}
                   href={item.href}
                   className={cx(
-                    item.current
+                    checkActive(item.href)
                       ? 'bg-indigo-800 text-white'
                       : 'text-indigo-100 hover:bg-indigo-600',
                     'group flex items-center px-2 py-2 text-base font-medium rounded-md',
@@ -229,7 +240,7 @@ export default function SidebarLayout({ children, title, user }: Props) {
                     aria-hidden="true"
                   />
                   {item.name}
-                </a>
+                </Link>
               ))}
             </nav>
 
@@ -240,11 +251,11 @@ export default function SidebarLayout({ children, title, user }: Props) {
 
               <nav className="mt-2 px-2 space-y-1">
                 {aidNavigation.map((item) => (
-                  <a
+                  <Link
                     key={item.name}
                     href={item.href}
                     className={cx(
-                      item.current
+                      checkActive(item.href)
                         ? 'bg-indigo-800 text-white'
                         : 'text-indigo-100 hover:bg-indigo-600',
                       'group flex items-center px-2 py-2 text-base font-medium rounded-md',
@@ -255,7 +266,7 @@ export default function SidebarLayout({ children, title, user }: Props) {
                       aria-hidden="true"
                     />
                     {item.name}
-                  </a>
+                  </Link>
                 ))}
               </nav>
             </div>
@@ -267,11 +278,11 @@ export default function SidebarLayout({ children, title, user }: Props) {
 
               <nav className="mt-2 px-2 space-y-1">
                 {contentNavigation.map((item) => (
-                  <a
+                  <Link
                     key={item.name}
                     href={item.href}
                     className={cx(
-                      item.current
+                      checkActive(item.href)
                         ? 'bg-indigo-800 text-white'
                         : 'text-indigo-100 hover:bg-indigo-600',
                       'group flex items-center px-2 py-2 text-base font-medium rounded-md',
@@ -282,7 +293,7 @@ export default function SidebarLayout({ children, title, user }: Props) {
                       aria-hidden="true"
                     />
                     {item.name}
-                  </a>
+                  </Link>
                 ))}
               </nav>
             </div>
@@ -333,7 +344,7 @@ export default function SidebarLayout({ children, title, user }: Props) {
                       {userNavigation.map((item) => (
                         <Menu.Item key={item.name}>
                           {({ active }) => (
-                            <a
+                            <Link
                               href={item.href}
                               className={cx(
                                 active ? 'bg-gray-100' : '',
@@ -341,7 +352,7 @@ export default function SidebarLayout({ children, title, user }: Props) {
                               )}
                             >
                               {item.name}
-                            </a>
+                            </Link>
                           )}
                         </Menu.Item>
                       ))}
@@ -365,8 +376,15 @@ export default function SidebarLayout({ children, title, user }: Props) {
         <main>
           <div className="py-6">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-              <h1 className="text-2xl font-semibold text-gray-900">{title}</h1>
+              {header
+                ? header
+                : Boolean(title) && (
+                    <h1 className="text-2xl font-semibold text-gray-900">
+                      {title}
+                    </h1>
+                  )}
             </div>
+
             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
               <div className="py-4">{children}</div>
             </div>
